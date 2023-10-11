@@ -1,0 +1,14 @@
+# https://taskfile.dev
+
+version: "3"
+
+dotenv:
+  - ".env"
+
+tasks:
+  dev:
+    desc: "Start development"
+    cmd: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+  build:
+    desc: "Build docker"
+    cmd: echo "Belum selesai dibuat"
