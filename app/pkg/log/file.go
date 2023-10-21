@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/murbagus/hexapb-go/pkg/dir"
 	"github.com/rotisserie/eris"
 	"github.com/rs/zerolog"
@@ -33,6 +34,8 @@ func FileError(err error) {
 	err = eris.New(err.Error())
 
 	stack := eris.ToJSON(err, true)
+	stackId, _ := uuid.NewRandom()
+	stack["id"] = stackId.String()
 	s, _ := json.Marshal(stack)
 
 	fl.Error().RawJSON("error", s).Send()
