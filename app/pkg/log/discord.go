@@ -16,6 +16,8 @@ type EmbedWebhookMessage struct {
 	Color string `json:"color,omitempty"`
 }
 
+// IncomingWebhookMessage merupakan body request untuk incoming webhook discord, detail
+// https://birdie0.github.io/discord-webhooks-guide/discord_webhook.html
 type IncomingWebhookMessage struct {
 	Content   string                `json:"content,omitempty"`
 	Username  string                `json:"username,omitempty"`
