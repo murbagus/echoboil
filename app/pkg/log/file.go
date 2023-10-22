@@ -36,6 +36,20 @@ func FileError(err error) {
 	stack := eris.ToJSON(err, true)
 	stackId, _ := uuid.NewRandom()
 	stack["id"] = stackId.String()
+
+	// Mengirimkan notifikasi error
+	// kedalam server
+	dw := NewDiscordWebhook(os.Getenv("DISCORD_WEBHOOK_URL"))
+	dw.SendMessage(IncomingWebhookMessage{
+		Content: stack["root"].(map[string]interface{})["message"].(string),
+		Embeds: []EmbedWebhookMessage{
+			{
+				Title: "Error ID",
+				Desc:  stackId.String(),
+			},
+		},
+	})
+
 	s, _ := json.Marshal(stack)
 
 	fl.Error().RawJSON("error", s).Send()
