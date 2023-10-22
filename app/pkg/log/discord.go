@@ -1,11 +1,7 @@
 package log
 
 import (
-	"bytes"
-	"encoding/json"
-	"io"
-	"net/http"
-
+	"github.com/imroc/req/v3"
 	"github.com/rotisserie/eris"
 )
 
@@ -39,24 +35,17 @@ func NewDiscordWebhook(url string) *discordWebhook {
 
 // SendMessage menirim pesan ke server discord dengan tipe incoming webhook
 func (dw *discordWebhook) SendMessage(m IncomingWebhookMessage) {
-	body, _ := json.Marshal(m)
-	postBody := bytes.NewBuffer(body)
+	client := req.C()
 
-	resp, err := http.Post(dw.url, "application/json", postBody)
+	resp, err := client.R().
+		SetBody(m).
+		Post(dw.url)
+
 	if err != nil {
 		ConsoleError(err)
 	}
 
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 && resp.StatusCode != 204 {
-
-		b, err := io.ReadAll(resp.Body)
-		if err != nil {
-			ConsoleError(err)
-		}
-
-		ConsoleError(eris.New(string(b)))
+	if !resp.IsSuccessState() {
+		ConsoleError(eris.New("Gagal mengirim log ke discord"))
 	}
-
 }
