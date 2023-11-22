@@ -8,7 +8,7 @@ import (
 
 // ValidateStruct digunakan untuk melakukan validasi struct dengan
 // rule yang telah ditentukan dalam modul validatro v10
-func ValidateStruct(gv GoVa, s interface{}) {
+func ValidateStruct(gv *gova, s interface{}) {
 	verr := vali.Struct(s)
 
 	if verr != nil {

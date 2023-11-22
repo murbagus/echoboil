@@ -3,8 +3,13 @@ package database
 import (
 	"fmt"
 
-	"github.com/rotisserie/eris"
+	"github.com/Masterminds/squirrel"
 )
+
+type driverDetail struct {
+	DSN              string
+	PlacehoderFormat squirrel.PlaceholderFormat
+}
 
 // DBDriver adalah enum untuk driver yang dapat dipilih
 // pada saat membuat koneksi database baru
@@ -24,22 +29,17 @@ func (d DBDriver) String() string {
 	}
 }
 
-// DSN mengembalikan string DSN stiap driver
-func (d DBDriver) DSN(username string, password string, host string, port string, dbName string) string {
+func (d DBDriver) Detail(username string, password string, host string, port string, dbName string) *driverDetail {
 	switch d {
 	case Postgres:
-		return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, dbName)
+		return &driverDetail{
+			DSN:              fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, dbName),
+			PlacehoderFormat: squirrel.Dollar,
+		}
 	default:
-		return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, dbName)
-	}
-}
-
-// GetDriver memilih driver dari bentuk string
-func GetDriver(driver string) (DBDriver, error) {
-	switch driver {
-	case "postgres":
-		return Postgres, nil
-	default:
-		return Undefined, eris.New(fmt.Sprint("Driver database ", driver, " tidak ditemukan"))
+		return &driverDetail{
+			DSN:              fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, dbName),
+			PlacehoderFormat: squirrel.Dollar,
+		}
 	}
 }

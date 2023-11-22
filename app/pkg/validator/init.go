@@ -3,10 +3,11 @@ package validator
 import (
 	"reflect"
 
+	t_id "github.com/murbagus/hexapb-go/pkg/validator/translation/id"
+
 	"github.com/go-playground/locales/id_ID"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
-	t_id "github.com/murbagus/hexapb-go/pkg/validator/translation/id"
 )
 
 var (

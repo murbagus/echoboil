@@ -1,16 +1,5 @@
 package validator
 
-type ErrorsJson map[string]interface{}
-type FieldRules map[string]interface{}
-type VarArrMap []map[string]interface{}
-type ValidateArrayFunc func(gv GoVa)
-
-type GoVa interface {
-	GetFieldErrors() []fieldError
-
-	AppendFieldErrors(field string, message string)
-}
-
 type fieldError struct {
 	field   string
 	message string
@@ -31,16 +20,16 @@ func (gv *gova) HasErrors() bool {
 	return len(gv.fes) > 0
 }
 
-// GetFieldErrors digunakan untuk mendapatkan field error
-func (gv *gova) GetFieldErrors() []fieldError {
+// Err digunakan untuk mendapatkan field error
+func (gv *gova) Err() []fieldError {
 	return gv.fes
 }
 
-// GetFieldErrors digunakan untuk mendapatkan field error
+// ErrJSON digunakan untuk mendapatkan field error
 // yang kompatibel dengan respons json framework echo
-func (gv *gova) ResponsErrorsJson() ErrorsJson {
-	tmp := make(ErrorsJson)
-	for _, fe := range gv.GetFieldErrors() {
+func (gv *gova) ErrJSON() map[string]interface{} {
+	tmp := make(map[string]interface{})
+	for _, fe := range gv.Err() {
 		tmp[fe.field] = fe.message
 	}
 

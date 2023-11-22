@@ -58,7 +58,7 @@ func (h *halo) Post(c echo.Context) error {
 	gv := validator.New()
 	validator.ValidateStruct(gv, st)
 	if gv.HasErrors() {
-		return c.JSON(http.StatusBadRequest, gv.ResponsErrorsJson())
+		return c.JSON(http.StatusBadRequest, gv.ErrJSON())
 	}
 
 	return c.JSON(http.StatusOK, st)

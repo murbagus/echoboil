@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/murbagus/hexapb-go/pkg/dir"
+
+	"github.com/google/uuid"
 	"github.com/rotisserie/eris"
 	"github.com/rs/zerolog"
 )
